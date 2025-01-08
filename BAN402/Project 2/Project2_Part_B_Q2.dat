@@ -1,0 +1,86 @@
+# =============================================================================================================
+# Part B - Question 2 - Data file
+# =============================================================================================================
+
+
+# =============================================================================================================
+# Sets
+# =============================================================================================================
+set TEAMS := GER SCO HUN SUI ESP CRO ITA ALB SVN DEN SRB ENG POL NED AUT FRA BEL SVK ROU UKR TUR GEO POR CZE;
+
+set MATCHES := 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36;
+
+set GROUPS := A B C D E F; 
+
+set VENUES := BER MUN DOR STU GEL HAM DUS FRK COL LEI;
+
+set DAYS := 14 15 16 17 18 19 20 21 22 23 24 25 26;
+
+set GERMANY_MATCHES := 1 14 25;
+
+set VenueDaysPairs :=
+    (14, MUN)
+    (15, BER) (15, DOR) (15, COL)
+    (16, HAM) (16, GEL) (16, STU)
+    (17, DUS) (17, FRK) (17, MUN)
+    (18, LEI) (18, DOR)
+    (19, HAM) (19, COL) (19, STU)
+    (20, GEL) (20, FRK) (20, MUN)
+    (21, BER) (21, LEI) (21, DUS)
+    (22, HAM) (22, DOR) (22, COL)
+    (23, FRK) (23, STU)
+    (24, LEI) (24, DUS)
+    (25, BER) (25, DOR) (25, COL) (25, MUN)
+    (26, HAM) (26, GEL) (26, FRK) (26, STU);
+
+# =============================================================================================================
+# Parameters
+# =============================================================================================================
+param distance :   BER   MUN   DOR   STU   GEL   HAM   DUS   FRK   COL   LEI :=
+BER                  0   571   501   628   510   290   564   545   571   180
+MUN                570     0   632   220   664   790   654   421   613   412
+DOR                491   638     0   452    34   353    68   271    99   420
+STU                628   222   449     0   454   676   421   202   380   470
+GEL                510   669    41   455     0   348    59   273   101   451
+HAM                290   790   351   676   347     0   401   506   425   399
+DUS                565   653    73   421    60   403     0   239    61   481
+FRK                549   420   267   202   272   508   238     0   198   391
+COL                570   610    96   378   102   425    60   196     0   492
+LEI                179   414   427   471   490   399   544   389   502     0;
+
+param: MATCHES: t1 t2 :=
+1  GER SCO    2  HUN SUI    3  ESP CRO    4  ITA ALB
+5  SRB ENG    6  SVN DEN    7  POL NED    8  AUT FRA
+9  BEL SVK   10  ROU UKR   11  TUR GEO   12  POR CZE
+13 SCO SUI   14 GER HUN   15 CRO ALB   16 ESP ITA
+17 DEN ENG   18 SVN SRB   19 POL AUT   20 NED FRA
+21 SVK UKR   22 BEL ROU   23 TUR POR   24 GEO CZE
+25 SUI GER   26 SCO HUN   27 ALB ESP   28 CRO ITA
+29 ENG SVN   30 DEN SRB   31 NED AUT   32 FRA POL
+33 SVK ROU   34 UKR BEL   35 GEO POR   36 CZE TUR;
+
+param group :=
+GER A  SCO A  HUN A  SUI A
+ESP B  CRO B  ITA B  ALB B
+SVN C  DEN C  SRB C  ENG C
+POL D  NED D  AUT D  FRA D
+BEL E  SVK E  ROU E  UKR E
+TUR F  GEO F  POR F  CZE F;
+
+
+param day_of_match :=
+1  14   2  15   3  15   4  15   5  16   6  16   7  16   8  17   9  17  10  17
+11 18  12  18  13  19  14  19  15  19  16  20  17  20  18  20  19  21  20  21
+21 21  22  22  23  22  24  22  25  23  26  23  27  24  28  24  29  25  30  25
+31 25  32  25  33  26  34  26  35  26  36  26;
+
+
+param matches_per_venue :=
+BER 3 MUN 4 DOR 4 STU 4 GEL 3 HAM 4 DUS 3 FRK 4 COL 4 LEI 3;
+
+
+param germany_match_venue :=
+ 1 MUN
+ 14 STU
+ 25 FRK;	
+
