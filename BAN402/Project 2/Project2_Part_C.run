@@ -1,0 +1,121 @@
+# =================================================================================================================
+# Part C - Question 1 and 2 - Run file
+# =================================================================================================================
+
+# =================================================================================================================
+# Reset, load the model and data
+# =================================================================================================================
+reset;
+model Part_C.mod;
+data Part_C.dat;
+
+# =================================================================================================================
+# Solve using Gurobi
+# =================================================================================================================
+option solver gurobi;
+solve;
+
+# =================================================================================================================
+# Display results - Task 1A
+# =================================================================================================================
+# Display the optimal objective value (profit)
+display contribution;
+
+# Inspect shipment from extreme markets
+display v;
+
+
+# Check when shipments to extreme south markets start, excluding day 0
+printf "\nShipments to extreme south markets (Day 1 to Day 8):\n";
+for {t in T: t > 0} {  # Start checking from day 1 (t > 0)
+    if EXT_S[t] > 0 then {
+        printf "Shipment to extreme south market starts on day %d from depots: ", t;
+        for {d in D} {
+            if sum {p in P, k in K_EXT_S} v[p,d,k,t] > 0 then {
+                printf "%s ", d;  # Print depot names shipping to extreme south markets
+            }
+        }
+        printf "\n";  # New line for clarity after printing depots
+    }
+}
+
+# Check when shipments to extreme north markets start, excluding day 0
+printf "\nShipments to extreme north markets (Day 1 to Day 10):\n";
+for {t in T: t > 0} {  # Start checking from day 1 (t > 0)
+    if EXT_N[t] > 0 then {
+        printf "Shipment to extreme north market starts on day %d from depots: ", t;
+        for {d in D} {
+            if sum {p in P, k in K_EXT_N} v[p,d,k,t] > 0 then {
+                printf "%s ", d;  # Print depot names shipping to extreme north markets
+            }
+        }
+        printf "\n";  # New line for clarity after printing depots
+    }
+}
+# =================================================================================================================
+# Display results - Task 1B
+# =================================================================================================================
+# Calculate and display the total unsatisfied demand for each product, market, and day
+printf "\nTotal Unsatisfied Demand for Each Product (split by days and markets):\n";
+
+for {p in P} {
+    printf "\n%s, *, * :=\n", p;  # Display the product name (Product)
+
+    for {k in K} {
+        printf "  %s\t", k;  # Print the market name on the left (Market)
+
+        for {t in T: t > 0} {
+            # Calculate the unsatisfied demand for regular and extreme markets
+            
+            # For regular markets, shipment on day t-1 satisfies day t demand
+            if (k in K_REG) then {
+                if (t > 1) then {
+                    printf "%g\t", max(delta[p,k,t] - sum {d in D} v[p,d,k,t-1], 0);  # Shipments on day t-1 satisfy day t
+                } else if (t == 1) then {
+                    printf "%g\t", max(delta[p,k,t] - sum {d in D} v[p,d,k,0], 0);  # Shipments on day 0 satisfy day 1
+                }
+            }
+            
+            # For extreme markets, shipment on day t-2 satisfies day t demand
+            else if (k in K_EXT) then {
+                if (t > 2) then {
+                    printf "%g\t", max(delta[p,k,t] - sum {d in D} v[p,d,k,t-2], 0);  # Shipments on day t-2 satisfy day t
+                } else if (t == 2) then {
+                    printf "%g\t", max(delta[p,k,t] - sum {d in D} v[p,d,k,0], 0);  # Shipments on day 0 satisfy day 2
+                }
+            }
+        }
+
+        printf " :=\n";  # Line break after printing the unsatisfied demand for each day
+    }
+    
+    printf "\n";  # Add a new line after each product for better readability
+}
+
+
+# =================================================================================================================
+# Display results - Task 1C
+# =================================================================================================================
+# Final inventory constraint for components 
+printf "\nFinal Inventory for Components:\n";
+printf "Component\tFinal Inventory\tMinimum Required\n";
+for {b in B} {
+    printf "%s\t\t%g\t\t%g\n", b, IC[b, last(T)], I_final_b[b];
+}
+
+# TASK 2
+# Print the inventory of crude oils stored at each refinery at the end of each day
+printf "\nInventory of Crude Oils Stored at the End of Each Day:\n";
+printf "Day\tRefinery\tCrude Oil\tInventory\n";
+for {r in R, i in I, t in T: t > 0} {
+    printf "Day %d\t%s\t\t%s\t\t%g\n", t, r, i, IO[r,i,t];
+}
+
+
+
+
+
+
+
+
+
