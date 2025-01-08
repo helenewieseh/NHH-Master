@@ -1,0 +1,28 @@
+# =================================
+# Part C - Question 3a
+# =================================
+
+# =================================
+# Reset
+# =================================
+reset;
+
+# =================================
+# Run model using cplex solver
+# =================================
+model Part_C_Q3a.mod;
+data Part_C_Q3a.dat;
+option solver cplex;
+option cplex_options 'sensitivity';
+solve;
+
+# =================================
+# Display results
+# =================================
+display total_cost;
+display x;
+display y;
+
+
+
+	
