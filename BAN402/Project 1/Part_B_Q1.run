@@ -1,0 +1,33 @@
+# ====================================================
+# Part B - Question 1
+# ====================================================
+
+# ====================================================
+# Reset
+# ====================================================
+reset;
+
+# ====================================================
+# Run model using cplex solver
+# ====================================================
+option solver cplex;
+option cplex_options 'sensitivity';
+model Part_B_Q123.mod;
+data Part_B_Q1.dat;
+solve;
+
+# ====================================================
+# Display results
+# ====================================================
+display total_profit;
+display x;
+display y;
+display {i in Inputs} sum {p in Products} y[p,i];
+display Capacitylimit.dual;
+display Inputlimit.dual;
+display x.up;
+display x.down;
+display x.rc;
+display y.up;
+display y.down;
+display y.rc;

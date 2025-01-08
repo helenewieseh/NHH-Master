@@ -1,0 +1,64 @@
+# ========================================================
+# Part B - Question 2
+# ========================================================
+
+# ========================================================
+# Sets
+# ========================================================
+set Products := Standard Special Ultra;
+set Inputs := Wheat Rye Grain Oats Corn Wheat_S2;
+set Nutrients := Protein Carbohydrate Vitamin;
+
+# ========================================================
+# Parameters
+# ========================================================
+
+# Demand for each product (in tons)
+param demand := 
+	Standard 400
+	Special 400
+	Ultra 350;
+	
+# Price per unit (in NOK)
+param revenue :=
+	Standard 8500
+	Special 9000
+	Ultra 10000;
+	
+# Production cost per ton (in NOK)
+param prodcost := 500;
+
+# Production capacity constraint (in NOK)
+param capacity := 1300;
+
+# Material data (supply and cost per ton)
+param: Inputs: supply cost :=
+	Wheat 500		1500
+	Rye Infinity	1600
+	Grain 600		1000
+	Oats 1000		1700
+	Corn 500		2500
+	Wheat_S2 400	1540;
+
+
+# Nutrient content table
+param nutrient_content: Protein Carbohydrate Vitamin :=
+	Wheat	10 60 2
+	Wheat_S2 10 60 2
+	Rye		10 45 1
+	Grain	6 40 0.5
+	Oats	11 50 2.2
+	Corn	12 40 2.3;
+
+# Minimum nutrient requirements for each product
+param min_nutrient: Protein Carbohydrate Vitamin :=
+	Standard	6 35 0.5
+	Special		7 40 1.0
+	Ultra		9 50 1.2;
+
+# Maximum nutrient limits for each product	
+param max_nutrient: Carbohydrate :=
+	Standard 55
+	Special	 60
+	Ultra	 70;
+	

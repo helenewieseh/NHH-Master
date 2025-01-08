@@ -1,0 +1,31 @@
+# =================================
+# Part A - Question 1 - 4
+# =================================
+
+# =================================
+# Reset
+# =================================
+reset;
+
+# =================================
+# Run model using cplex solver
+# =================================
+model Part_A.mod;
+data Part_A.dat;
+option solver cplex;
+option cplex_options 'sensitivity';
+solve;
+
+# =================================
+# Display results
+# =================================
+display Total_cost;
+display x;
+display x.down;
+display x.up;
+display x.rc;
+display Pollution_reduction.dual;
+
+
+	
+
