@@ -1,0 +1,68 @@
+# =================================================================================================================
+# Part B - Question 2 - Run file
+# =================================================================================================================
+
+# =================================================================================================================
+# Reset
+# =================================================================================================================
+
+reset;
+
+# =================================================================================================================
+# Solve
+# =================================================================================================================
+
+model Project2_Part_B_Q2.mod;
+data Project2_Part_B_Q2.dat;
+option solver gurobi;
+option gurobi_options 'outlev=1';
+option show_stats 1;
+solve;
+
+# =================================================================================================================
+# Display results
+# =================================================================================================================
+
+# Display the match schedule details
+printf "Match Schedule:\n";
+for {match in MATCHES} {
+    for {location in VENUES} {
+        if x[match, location].val == 1 then
+            printf "Match %d: %s vs %s scheduled for day %d at %s\n", 
+                   match, t1[match], t2[match], day_of_match[match], location;
+    }
+}
+
+
+# Display the total travel distance for GER
+printf "GER Total Travel Distance: %f km\n", travel["GER"];
+
+# Display travel distances per team
+printf "\nTravel Distances by Team:\n";
+for {team in TEAMS} {
+    printf "%s total travel: %f km\n", team, travel[team];
+}
+
+# Display total travel distance for all teams
+printf "\nTotal Travel Distance for All Teams: %f km\n", sum {team in TEAMS} travel[team];
+
+# Group-wise match distribution at each venue
+printf "Group-wise Matches per Venue:\n";
+printf "%-10s", "Group";
+for {location in VENUES} {
+    printf "%-15s", location;
+}
+printf "\n";
+
+for {grp in GROUPS} {
+    printf "%-10s", grp;
+    for {location in VENUES} {
+        printf "%-15d", sum {match in MATCHES: (group[t1[match]] = grp or group[t2[match]] = grp)} x[match, location];
+    }
+    printf "\n";
+}
+
+
+
+
+
